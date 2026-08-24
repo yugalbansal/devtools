@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevTools — four little tools that never leave your browser</title>
+<meta name="description" content="Decode JWTs, generate hashes, inspect web storage, diff JSON. Four browser-native developer tools with zero uploads.">
+
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<header class="site-nav" id="site-nav">
+  <a class="wordmark" href="#top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    DevTools
+  </a>
+  <nav class="nav-links" aria-label="Sections">
+    <a href="#jwt">JWT</a>
+    <a href="#hash">Hash</a>
+    <a href="#storage">Storage</a>
+    <a href="#diff">Diff</a>
+  </nav>
+  <a class="btn btn-primary btn-sm" href="tools.html">Open Tools</a>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-decor" aria-hidden="true">
+      <span class="chip chip-a">exp</span>
+      <span class="chip chip-b">SHA-256</span>
+      <span class="chip chip-c">iat</span>
+      <span class="chip chip-d">{ }</span>
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+    </div>
+
+    <p class="eyebrow reveal">four tools · zero uploads</p>
+    <h1 class="reveal" style="--d:80ms">Dev tools that live in<br><span class="accent-underlined">your browser</span> tab.</h1>
+    <p class="hero-sub reveal" style="--d:160ms">
+      Decode a JWT. Hash some text. Peek at what websites store about you.
+      Diff two JSON files. All local, all instant, nothing sent anywhere.
+    </p>
+    <div class="hero-cta reveal" style="--d:240ms">
+      <a class="btn btn-primary btn-lg" href="tools.html">Start decoding
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a class="btn btn-lg" href="#jwt">Meet the tools</a>
+    </div>
+
+    <div class="hero-token reveal" style="--d:320ms" aria-hidden="true">
+      <span class="seg seg-header">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span><span class="seg-dot">.</span><span class="seg seg-payload">eyJzdWIiOiJzdHVkZW50LTQyIn0</span><span class="seg-dot">.</span><span class="seg seg-signature">4fJx8s…</span>
+    </div>
+  </section>
+
+  <!-- ================= MARQUEE TICKER ================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>base64url</span><i>·</i><span>SHA-512</span><i>·</i><span>payload</span><i>·</i><span>localStorage</span><i>·</i><span>signature</span><i>·</i><span>sessionStorage</span><i>·</i><span>JSON.parse</span><i>·</i><span>Web Crypto</span><i>·</i>
+      <span>base64url</span><i>·</i><span>SHA-512</span><i>·</i><span>payload</span><i>·</i><span>localStorage</span><i>·</i><span>signature</span><i>·</i><span>sessionStorage</span><i>·</i><span>JSON.parse</span><i>·</i><span>Web Crypto</span><i>·</i>
+    </div>
+  </div>
+
+  <!-- ================= TOOL: JWT ================= -->
+  <section class="tool-section" id="jwt">
+    <div class="tool-copy reveal">
+      <p class="eyebrow">01 · jwt inspector</p>
+      <h2>See what's really<br>inside a token.</h2>
+      <p>Paste any JWT and watch it split apart into colour-coded header, payload, and signature. Every claim gets explained — and the expiry badge counts down live, so <code>exp</code> finally means something.</p>
+      <ul class="feature-list">
+        <li>Header, payload &amp; signature decoded side by side</li>
+        <li>Time claims translated to plain-language dates</li>
+        <li>Standard vs. custom claims tagged at a glance</li>
+      </ul>
+      <a class="btn tool-link" href="tools.html#jwt">Open the JWT inspector
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="tool-visual reveal" style="--d:120ms" aria-hidden="true">
+      <div class="mini-card">
+        <div class="claim-row"><span class="claim-key">sub</span><span class="claim-val">"student-42"</span></div>
+        <div class="claim-row"><span class="claim-key">role</span><span class="claim-val">"student"</span></div>
+        <div class="claim-row"><span class="claim-key">exp</span><span class="claim-val">1766102400</span><span class="badge badge-success">valid · 23h left</span></div>
+        <div class="claim-row"><span class="claim-key">theme_color</span><span class="claim-val">"amber"</span><span class="badge badge-info">custom</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOL: HASH ================= -->
+  <section class="tool-section flip" id="hash">
+    <div class="tool-copy reveal">
+      <p class="eyebrow">02 · hash generator</p>
+      <h2>Type anything.<br>Get four digests.</h2>
+      <p>The SHA family, computed by your browser's own Web Crypto engine. Paste a known digest underneath and the compare bar tells you instantly whether it matches.</p>
+      <ul class="feature-list">
+        <li>SHA-1, SHA-256, SHA-384 and SHA-512 in one pass</li>
+        <li>Match-check against any reference hash</li>
+        <li>One-click copy on every digest row</li>
+      </ul>
+      <a class="btn tool-link" href="tools.html#hash">Open the hash generator
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="tool-visual reveal" style="--d:120ms" aria-hidden="true">
+      <div class="mini-card">
+        <div class="hash-demo-row"><span class="hash-algo">SHA-256</span><span class="hex">d7a8fb…3e02c9</span></div>
+        <div class="hash-demo-row"><span class="hash-algo">SHA-384</span><span class="hex">0f89a2…b41c7d</span></div>
+        <div class="hash-demo-row"><span class="hash-algo">SHA-512</span><span class="hex">9b71d2…c44f18</span></div>
+        <div class="compare-demo"><span class="badge badge-success">match — SHA-256</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOL: STORAGE ================= -->
+  <section class="tool-section" id="storage">
+    <div class="tool-copy reveal">
+      <p class="eyebrow">03 · storage manager</p>
+      <h2>X-ray for<br>web storage.</h2>
+      <p>Websites quietly tuck data into localStorage and sessionStorage all the time. This lays it out in the open — add keys, edit values, export a snapshot, wipe it clean.</p>
+      <ul class="feature-list">
+        <li>Live table of every stored key–value pair</li>
+        <li>Edit in place, delete, or clear everything</li>
+        <li>Download any storage as a .json snapshot</li>
+      </ul>
+      <a class="btn tool-link" href="tools.html#storage">Open the storage manager
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="tool-visual reveal" style="--d:120ms" aria-hidden="true">
+      <div class="mini-card">
+        <div class="kv-row"><span class="kv-key">theme</span><span class="kv-val">"dark"</span></div>
+        <div class="kv-row"><span class="kv-key">cart_items</span><span class="kv-val">"[3]"</span></div>
+        <div class="kv-row"><span class="kv-key">last_login</span><span class="kv-val">"2026-08-24"</span></div>
+        <div class="storage-tabs-demo"><span class="tab-on">localStorage</span><span>sessionStorage</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOL: DIFF ================= -->
+  <section class="tool-section flip" id="diff">
+    <div class="tool-copy reveal">
+      <p class="eyebrow">04 · json diff</p>
+      <h2>Two JSONs walk in.<br>Every change walks out.</h2>
+      <p>Drop a before and after into the panels. Added keys glow green, removed ones red, changed values amber. Invalid JSON? You get the exact parser error, not a vague shrug.</p>
+      <ul class="feature-list">
+        <li>Nested objects and arrays compared recursively</li>
+        <li>Added / removed / modified highlighted by colour</li>
+        <li>Precise, panel-specific validation errors</li>
+      </ul>
+      <a class="btn tool-link" href="tools.html#jsondiff">Open the JSON diff
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="tool-visual reveal" style="--d:120ms" aria-hidden="true">
+      <div class="mini-card diff-mini">
+        <span class="diff-line added">&nbsp;+ version: "2.0.0"</span>
+        <span class="diff-line removed">&nbsp;- license: "MIT"</span>
+        <span class="diff-line modified">&nbsp;~ author.email → changed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY LOCAL ================= -->
+  <section class="principles">
+    <h2 class="reveal">Built to stay local.</h2>
+    <div class="principle-grid">
+      <div class="principle reveal"><strong>No accounts.</strong>Nothing to sign up for, nothing phoning home.</div>
+      <div class="principle reveal" style="--d:100ms"><strong>No servers.</strong>Your tokens and text are processed by your own CPU.</div>
+      <div class="principle reveal" style="--d:200ms"><strong>No mystery.</strong>View source — every line of it is right there.</div>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section class="cta-final">
+    <div class="cta-inner reveal">
+      <span class="cta-glyph" aria-hidden="true">&#123;&#125;</span>
+      <p class="eyebrow">ready when you are</p>
+      <h2>Pick a tool<br>and poke it.</h2>
+      <p>The fastest way to understand a JWT is to break one open.</p>
+      <a class="btn btn-primary btn-lg" href="tools.html">Open DevTools
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <strong>Built for learners.</strong> Every byte stays on your machine — no servers, no tracking, no accounts.
+</footer>
+
+<script src="landing.js"></script>
+</body>
+</html>

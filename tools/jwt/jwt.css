@@ -1,0 +1,102 @@
+/* JWT Inspector styles */
+
+.jwt-raw {
+  padding: var(--space-4);
+  background: var(--color-paper-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  word-break: break-all;
+}
+
+.seg-header    { color: oklch(55% 0.18 340); }
+.seg-payload   { color: var(--color-accent-ink); }
+.seg-signature { color: var(--color-success); }
+.seg-dot       { color: var(--color-ink-3); font-weight: 700; }
+
+.jwt-parts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.jwt-part {
+  background: var(--color-paper-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.jwt-part h4 {
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.jwt-part.header    h4 { color: oklch(55% 0.18 340); }
+.jwt-part.payload   h4 { color: var(--color-accent-ink); }
+.jwt-part.signature h4 { color: var(--color-success); }
+
+.jwt-part pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-ink-0);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.status-note {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink-2);
+}
+
+.claim-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+.claim-row:last-child { border-bottom: none; }
+
+.claim-key {
+  min-width: 110px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+.claim-key.claim-custom { color: oklch(50% 0.15 300); }
+
+.claim-val {
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-0);
+}
+
+.claim-human {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--color-ink-2);
+}
+
+.empty-note {
+  font-size: 13px;
+  color: var(--color-ink-3);
+}
+
+@media (max-width: 900px) {
+  .jwt-parts { grid-template-columns: 1fr; }
+}

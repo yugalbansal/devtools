@@ -1,0 +1,43 @@
+/* JSON Diff styles */
+
+.json-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.diff-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.diff-output {
+  padding: var(--space-4);
+  background: var(--color-paper-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  max-height: 480px;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+}
+
+.diff-line {
+  display: block;
+  padding: 0 var(--space-2);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.diff-line.added     { background: var(--color-success-dim); border-left: 3px solid var(--color-success); }
+.diff-line.removed   { background: var(--color-danger-dim);  border-left: 3px solid var(--color-danger); }
+.diff-line.modified  { background: var(--color-warning-dim); border-left: 3px solid var(--color-warning); }
+.diff-line.added     { color: oklch(42% 0.13 142); }
+.diff-line.removed   { color: oklch(45% 0.18 25); }
+.diff-line.modified  { color: var(--color-accent-ink); }
+.diff-line.unchanged { color: var(--color-ink-3); }
+
+@media (max-width: 768px) {
+  .json-inputs { grid-template-columns: 1fr; }
+}

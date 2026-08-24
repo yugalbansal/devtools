@@ -1,0 +1,72 @@
+/* Buttons — all 8 states */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-paper-0);
+  color: var(--color-ink-0);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease,
+              border-color var(--duration-fast) ease,
+              transform var(--duration-fast) ease,
+              opacity var(--duration-fast) ease;
+}
+
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn:hover { background: var(--color-paper-2); border-color: var(--color-border-hover); }
+
+.btn:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 2px; }
+
+.btn:active { transform: scale(0.97); }
+
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.btn[data-state="loading"] { pointer-events: none; opacity: 0.7; }
+.btn[data-state="loading"]::before {
+  content: "";
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 700ms linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+
+.btn[data-state="error"] { border-color: var(--color-danger); color: var(--color-danger); animation: btn-shake 300ms var(--ease-out); }
+.btn[data-state="success"] { border-color: var(--color-success); color: var(--color-success); }
+
+@keyframes btn-shake {
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Variants */
+.btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+.btn-primary:focus-visible { outline-offset: 3px; }
+
+.btn-danger { color: var(--color-danger); }
+.btn-danger:hover { background: var(--color-danger-dim); border-color: var(--color-danger); }
+
+.btn-sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; }
+.btn-sm svg { width: 14px; height: 14px; }
+
+.btn-icon { width: 40px; padding: 0; }
+.btn-icon.btn-sm { width: 32px; }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }

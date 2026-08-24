@@ -1,0 +1,84 @@
+/* Storage Manager styles */
+
+.storage-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.storage-tab {
+  padding: var(--space-3) var(--space-5);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink-2);
+  cursor: pointer;
+  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+.storage-tab:hover { color: var(--color-ink-0); }
+.storage-tab:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: -2px; }
+.storage-tab[aria-selected="true"] {
+  color: var(--color-accent-ink);
+  border-bottom-color: var(--color-accent);
+}
+
+.storage-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.storage-count { font-size: 12px; font-weight: 600; color: var(--color-ink-3); }
+
+.storage-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+  gap: var(--space-2);
+  align-items: end;
+  margin-bottom: var(--space-4);
+}
+
+.storage-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-paper-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.storage-entry + .storage-entry { margin-top: var(--space-2); }
+.storage-entry:hover { border-color: var(--color-border-hover); }
+
+.storage-key {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  word-break: break-all;
+  color: var(--color-accent-ink);
+}
+
+.storage-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  word-break: break-all;
+  color: var(--color-ink-2);
+}
+
+.storage-actions { display: flex; gap: var(--space-1); }
+
+@media (max-width: 700px) {
+  .storage-add-row,
+  .storage-entry { grid-template-columns: 1fr; }
+  .storage-actions { justify-content: flex-end; }
+}

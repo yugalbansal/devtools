@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevTools — JWT · Hash · Storage · JSON Diff</title>
+<meta name="description" content="Four playful browser-native dev tools: decode JWTs, hash text, manage web storage, diff JSON.">
+
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/tab-bar.css">
+<link rel="stylesheet" href="components/card.css">
+<link rel="stylesheet" href="components/button.css">
+<link rel="stylesheet" href="components/input.css">
+<link rel="stylesheet" href="components/badge.css">
+<link rel="stylesheet" href="components/toast.css">
+<link rel="stylesheet" href="components/modal.css">
+<link rel="stylesheet" href="tools/jwt/jwt.css">
+<link rel="stylesheet" href="tools/hash/hash.css">
+<link rel="stylesheet" href="tools/storage/storage.css">
+<link rel="stylesheet" href="tools/diff/diff.css">
+
+<style>
+/* Page shell — layout only, everything visual lives in tokens + components */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Author display rules (.error-msg etc.) must never defeat the hidden attribute */
+[hidden] { display: none !important; }
+
+html { -webkit-font-smoothing: antialiased; }
+html, body { overflow-x: clip; }
+body {
+  font-family: var(--font-ui);
+  color: var(--color-ink-0);
+  background:
+    radial-gradient(1200px 400px at 50% -100px, var(--color-accent-dim), transparent),
+    var(--color-paper-2);
+  min-height: 100vh;
+}
+
+.app-header,
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-5);
+  transition: box-shadow var(--duration-base) ease, background var(--duration-base) ease;
+}
+.site-nav.scrolled {
+  background: oklch(97% 0.01 75 / 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+}
+.site-nav .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-ink-0);
+}
+.site-nav .wordmark svg { width: 20px; height: 20px; color: var(--color-accent); }
+
+body { min-height: 100vh; padding-top: 72px; }
+.tab-bar { top: 64px; }
+
+.app-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-4) var(--space-10);
+}
+
+.app-footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-10);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  color: var(--color-ink-3);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.app-footer strong { color: var(--color-ink-2); }
+.footer-back {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+}
+.footer-back:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-nav" id="site-nav">
+  <a class="wordmark" href="index.html" title="Back to overview">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+    </svg>
+    DevTools
+  </a>
+</header>
+
+<nav class="tab-bar" role="tablist" aria-label="Tools">
+  <button class="tab-btn" role="tab" aria-selected="true" data-tab="jwt" id="tab-jwt" aria-controls="panel-jwt">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+    JWT
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="hash" id="tab-hash" aria-controls="panel-hash">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Hash
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="storage" id="tab-storage" aria-controls="panel-storage">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+    Storage
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="jsondiff" id="tab-jsondiff" aria-controls="panel-jsondiff">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    JSON Diff
+  </button>
+</nav>
+
+<main class="app-main">
+
+  <!-- ============ JWT INSPECTOR ============ -->
+  <section class="panel active" id="panel-jwt" role="tabpanel" aria-labelledby="tab-jwt">
+    <div class="tool-header">
+      <h2>JWT Decoder &amp; Inspector</h2>
+      <p>Paste a token and see exactly what's inside — header, payload, every claim, and whether it has expired. Nothing is verified against a server, so this is for learning, not login checks.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Token</div>
+      <textarea id="jwt-input" class="tall" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." spellcheck="false"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="jwt-decode-btn">Decode</button>
+        <button class="btn" id="jwt-sample-btn">Load Sample</button>
+        <button class="btn" id="jwt-clear-btn">Clear</button>
+      </div>
+      <div class="error-msg" id="jwt-error" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <span id="jwt-error-text"></span>
+      </div>
+    </div>
+
+    <div id="jwt-output" hidden>
+      <div class="card">
+        <div class="card-title">Decoded token <span id="jwt-status-badge"></span></div>
+        <div class="jwt-raw" id="jwt-raw"></div>
+        <div class="jwt-parts">
+          <div class="jwt-part header">
+            <h4>Header</h4>
+            <pre id="jwt-header-decoded"></pre>
+          </div>
+          <div class="jwt-part payload">
+            <h4>Payload</h4>
+            <pre id="jwt-payload-decoded"></pre>
+          </div>
+          <div class="jwt-part signature">
+            <h4>Signature</h4>
+            <pre id="jwt-signature-info"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Time claims</div>
+        <div id="jwt-time-claims"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">All payload claims</div>
+        <div id="jwt-all-claims"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HASH GENERATOR ============ -->
+  <section class="panel" id="panel-hash" role="tabpanel" aria-labelledby="tab-hash">
+    <div class="tool-header">
+      <h2>Hash Generator</h2>
+      <p>Type anything and get its SHA family digests, computed locally with the Web Crypto API. Paste a known hash below to check for a match.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Input</div>
+      <textarea id="hash-input" placeholder="The quick brown fox jumps over the lazy dog" spellcheck="false"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="hash-generate-btn">Generate Hashes</button>
+        <button class="btn" id="hash-clear-btn">Clear</button>
+      </div>
+    </div>
+
+    <div id="hash-output" hidden>
+      <div class="card">
+        <div class="card-title">Digests</div>
+        <div id="hash-results"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Compare against a known hash</div>
+        <div class="compare-bar">
+          <input type="text" class="input" id="hash-compare-input" placeholder="Paste a hash…" spellcheck="false">
+          <button class="btn" id="hash-compare-btn">Compare</button>
+        </div>
+        <div id="hash-compare-result" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STORAGE MANAGER ============ -->
+  <section class="panel" id="panel-storage" role="tabpanel" aria-labelledby="tab-storage">
+    <div class="tool-header">
+      <h2>Browser Storage Manager</h2>
+      <p>This page's own localStorage and sessionStorage, laid bare. Add keys, tweak values, export a snapshot — great for seeing what websites actually save about you.</p>
+    </div>
+
+    <div class="card">
+      <div class="storage-tabs" role="tablist" aria-label="Storage type">
+        <button class="storage-tab" role="tab" aria-selected="true" data-storage="local">localStorage</button>
+        <button class="storage-tab" role="tab" aria-selected="false" data-storage="session">sessionStorage</button>
+      </div>
+
+      <div class="storage-toolbar">
+        <span class="storage-count" id="storage-count">0 entries</span>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn btn-sm" id="storage-export-btn">Export JSON</button>
+          <button class="btn btn-sm btn-danger" id="storage-clear-btn">Clear All</button>
+        </div>
+      </div>
+
+      <div class="storage-add-row">
+        <input type="text" class="input" id="storage-new-key" placeholder="key" aria-label="New key" spellcheck="false">
+        <input type="text" class="input" id="storage-new-value" placeholder="value" aria-label="New value" spellcheck="false">
+        <button class="btn btn-primary" id="storage-add-btn">Add</button>
+      </div>
+
+      <div id="storage-entries"></div>
+    </div>
+  </section>
+
+  <!-- ============ JSON DIFF ============ -->
+  <section class="panel" id="panel-jsondiff" role="tabpanel" aria-labelledby="tab-jsondiff">
+    <div class="tool-header">
+      <h2>JSON Diff Tool</h2>
+      <p>Drop two JSON documents in and spot every key that was added, removed, or changed. Invalid JSON gets a precise parser error, not a shrug.</p>
+    </div>
+
+    <div class="card">
+      <div class="json-inputs">
+        <div class="field-group">
+          <label class="field-label" for="json-left">Original</label>
+          <textarea id="json-left" class="tall" spellcheck="false"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="json-right">Modified</label>
+          <textarea id="json-right" class="tall" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="diff-compare-btn">Compare</button>
+        <button class="btn" id="diff-sample-btn">Load Sample</button>
+        <button class="btn" id="diff-swap-btn">Swap</button>
+        <button class="btn" id="diff-clear-btn">Clear</button>
+      </div>
+      <div class="error-msg" id="diff-error" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <span id="diff-error-text"></span>
+      </div>
+    </div>
+
+    <div class="card" id="diff-result" hidden>
+      <div class="card-title">Differences</div>
+      <div class="diff-stats" id="diff-stats"></div>
+      <div class="diff-output" id="diff-output"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <strong>Built for learners.</strong> Every byte stays on your machine — no servers, no tracking, no accounts.
+  <a class="footer-back" href="index.html">← Back to overview</a>
+  View source to see how each tool works.
+</footer>
+
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

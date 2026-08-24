@@ -1,0 +1,73 @@
+/* ============================================================
+   DevTools · Hum theme — locked design tokens
+   Hallmark · macrostructure: Workbench · theme: Hum (playful)
+   paper: light warm · accent: amber · display: rounded sans
+   Every colour/font/space in the app references a token here.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* Paper — light, warm */
+  --color-paper-0: #ffffff;
+  --color-paper-1: #faf9f7;
+  --color-paper-2: #f4f2ee;
+  --color-paper-3: #e8e5df;
+
+  /* Ink */
+  --color-ink-0: #1c1917;
+  --color-ink-1: #292524;
+  --color-ink-2: #57534e;
+  --color-ink-3: #a8a29e;
+
+  /* Accent — warm amber */
+  --color-accent: oklch(62% 0.18 75);
+  --color-accent-hover: oklch(56% 0.19 75);
+  --color-accent-dim: oklch(92% 0.08 75);
+  --color-accent-ink: oklch(38% 0.11 75);
+
+  /* Status */
+  --color-success: oklch(58% 0.16 142);
+  --color-success-dim: oklch(93% 0.06 142);
+  --color-danger: oklch(58% 0.22 25);
+  --color-danger-dim: oklch(94% 0.05 25);
+  --color-warning: oklch(68% 0.16 85);
+  --color-warning-dim: oklch(95% 0.07 85);
+
+  /* Lines */
+  --color-border: oklch(88% 0.012 75);
+  --color-border-hover: oklch(78% 0.02 75);
+  --color-border-focus: var(--color-accent);
+
+  /* Type */
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Space — 4pt scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Depth */
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.06);
+  --shadow-md: 0 4px 14px oklch(0% 0 0 / 0.09);
+  --shadow-lg: 0 12px 32px oklch(0% 0 0 / 0.14);
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
