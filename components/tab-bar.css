@@ -49,3 +49,17 @@
 }
 
 .tab-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Compact mode: all four tabs must fit on small screens — no scrolling */
+@media (max-width: 560px) {
+  .tab-bar {
+    gap: var(--space-1);
+    max-width: calc(100% - var(--space-4));
+  }
+  .tab-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: 12.5px;
+    gap: 0;
+  }
+  .tab-btn svg { display: none; }
+}
